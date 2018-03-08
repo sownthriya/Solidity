@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="web3.min.js"></script>
+    <title>Test</title>
+	 
+  </head>
+  <body bgcolor="pink">
+   <center><h1><p> BANK PROCESS </p></h1>
+
+	<label>Amount<input id="name1" type="text"/></label>
+	<h1><button id="sup" onclick="totalsupply()">TOTALSUPPLY</button><br><br></h1>
+
+	
+	<label>Address<input id="name2" type="text"/></label>
+	<label>Amount<input id="name3" type="text"/></label>
+	<h1><button id="trans" onclick="transfer()">TRANSFER</button><br><br></h1>
+
+	<label>Address<input id="name4" type="text"/></label>
+	<label>Amount<input id="name5" type="text"/></label>
+	<h1><button id="mint" onclick="mintable()">MINTABLE</button><br><br></h1>
+
+	
+	
+	
+</center>
+
+</body>
+
+<script>
+   
+        web3.eth.defaultAccount = web3.eth.accounts[0];
+        var bankkcon = web3.eth.contract([
+
+
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "totalSupply",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_owner",
+				"type": "address"
+			}
+		],
+		"name": "balanceOf",
+		"outputs": [
+			{
+				"name": "balance",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_owner",
+				"type": "address"
+			},
+			{
+				"name": "_amount",
+				"type": "uint256"
+			}
+		],
+		"name": "mintable",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_to",
+				"type": "address"
+			},
+			{
+				"name": "_value",
+				"type": "uint256"
+			}
+		],
+		"name": "transfer",
+		"outputs": [
+			{
+				"name": "success",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"name": "_owner",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "Mint",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"name": "_from",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"name": "_to",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "_value",
+				"type": "uint256"
+			}
+		],
+		"name": "Transfer",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"name": "_owner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"name": "_spender",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "_value",
+				"type": "uint256"
+			}
+		],
+		"name": "Approval",
+		"type": "event"
+	}
+
+
+
+	
+]);
+	var bankk= bankkcon.at('0x17e0536cd7eecf5d9299e44cd8dd50c4d1c910e4');
+	
+       var supply=document.getElementById("name1");
+	
+	var tamount=document.getElementById("name2");
+	
+	var tadd=document.getElementById("name3");
+	var mamount=document.getElementById("name4");
+	var madd=document.getElementById("name5");
+	
+     if(!web3.isConnected()) {
+  
+        console.log("Ok");
+        
+      } else {
+        console.log("no");
+      }
+      web3.version.getNetwork((err, netId) => {
+            switch (netId) {
+              case "1":
+                console.log('This is mainnet')
+                break
+              case "2":
+                console.log('This is the deprecated Morden test network.')
+                break
+              case "3":
+                console.log('This is the ropsten test network.')
+                break
+              case "4":
+                console.log('This is the Rinkeby test network.')
+                break
+              case "42":
+                console.log('This is the Kovan test network.')
+                break
+              default:
+                console.log('This is an unknown network.')
+            }
+        })
+function totalsupply()
+	{
+	 
+	 return bankk.totalsupply(supply.value,function(err,res){
+                if (!err) {
+                   
+		    output.innerText = res;
+                }
+                else{
+		  
+                  output.innerText = "Error";
+                }
+              });
+	}
+
+
+function transfer()
+	{
+	 
+	 return bankk.transfer(tadd.value,tamount.value,function(err,res){
+                if (!err) {
+                   
+		    output.innerText = res;
+                }
+                else{
+		  
+                  output.innerText = "Error";
+                }
+              });
+	}
+
+function mintable()
+	{
+	 
+	 return bankk.mintable(mamount.value,madd.value,function(err,res){
+                if (!err) {
+                  output.innerText = res;
+                
+                }
+                else{
+		  
+                  output.innerText = "Error";
+                }
+              });
+	}
+
+
+</script>
+</html>
+
+
+
+
+
+
+
